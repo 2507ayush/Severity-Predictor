@@ -3,7 +3,7 @@ import streamlit as st
 import pickle
 from xgboost import XGBClassifier
 from PIL import Image
-import pyttsx3
+# import pyttsx3
 
 
 
@@ -14,24 +14,23 @@ def load_encoding():
     return data
 
 data = load_encoding()
-engine = pyttsx3.init()
-engine.setProperty('rate', 130)
-engine.setProperty('volume', 1)
-engine.setProperty('pitch', 100)
+# engine = pyttsx3.init()
+# engine.setProperty('rate', 130)
+# engine.setProperty('volume', 1)
+# engine.setProperty('pitch', 100)
 
 xgb = XGBClassifier()
 xgb.load_model(r'model/model_xgb.bin')
 
-def speak_prediction(prediction):
+# def speak_prediction(prediction):
     
-    voices = engine.getProperty('voices')
-    print(voices)
-    engine.setProperty('voice', voices[1].id)
-    engine.say(prediction)
-    engine.runAndWait()
+#     voices = engine.getProperty('voices')
+#     engine.setProperty('voice', voices[1].id)
+#     engine.say(prediction)
+#     engine.runAndWait()
 
-if engine._inLoop:
-    engine.endLoop()
+# if engine._inLoop:
+#     engine.endLoop()
 
 
 # Encoders
@@ -131,18 +130,18 @@ def main():
         if pred == 'Slight injury':
             st.success('Thank God! It was a Slight Injury!')
             exciting_prediction = "Wow, thank God! It was a Slight Injury! What a relief!"
-            speak_prediction(exciting_prediction)
+            # speak_prediction(exciting_prediction)
         elif pred == 'Serious Injury':
             st.warning('It seems like Serious Injury!')
-            speak_prediction("Uh-oh, it seems like..., Serious Injury! Please stay alert and careful on the roads!")
+            # speak_prediction("Uh-oh, it seems like..., Serious Injury! Please stay alert and careful on the roads!")
         else:
             fatal_injury_statement = "OMG, it's a Fatal Injury. Hope the driver recovers fast. Stay strong!."
-            speak_prediction(fatal_injury_statement)
+            # speak_prediction(fatal_injury_statement)
 
     # Add a footer section with the message from Aditya
     st.markdown("<hr style='border: 1px solid #ccc;'>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-size: 16px;'>Greetings from <b>Aditya</b>. Thanks for using this application! 🚗</p>", unsafe_allow_html=True)
-    speak_prediction("Hello, Welcome to Accident Severity Prediction Platform")
+    # speak_prediction("Hello, Welcome to Accident Severity Prediction Platform")
 
 if __name__ == '__main__':
     main()
