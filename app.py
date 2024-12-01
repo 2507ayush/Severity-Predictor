@@ -3,6 +3,9 @@ import streamlit as st
 import pickle
 from xgboost import XGBClassifier
 from PIL import Image
+import pyttsx3
+
+
 
 # Load encoders and model
 def load_encoding():
@@ -11,9 +14,25 @@ def load_encoding():
     return data
 
 data = load_encoding()
+engine = pyttsx3.init()
+engine.setProperty('rate', 130)
+engine.setProperty('volume', 1)
+engine.setProperty('pitch', 100)
 
 xgb = XGBClassifier()
 xgb.load_model(r'model/model_xgb.bin')
+
+def speak_prediction(prediction):
+    
+    voices = engine.getProperty('voices')
+    print(voices)
+    engine.setProperty('voice', voices[1].id)
+    engine.say(prediction)
+    engine.runAndWait()
+
+if engine._inLoop:
+    engine.endLoop()
+
 
 # Encoders
 le_Day_of_week = data['le_Day_of_week']
@@ -44,17 +63,15 @@ with col2:
 st.markdown("<h1 style='text-align: center; color: #FF5733;'>Accident Severity Prediction 🚦</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 18px;'>Predict the severity of road accidents based on input parameters.</p>", unsafe_allow_html=True)
 
-# Custom styling for inputs
-st.markdown("""<style>
-    .stSlider > div {background-color: #f0f0f0;}
-    .stButton button {background-color: #FF5733; color: white; border-radius: 8px;}
-    .stSelectbox {background-color: #f9f9f9;}
-</style>""", unsafe_allow_html=True)
+# st.markdown("""<style>
+#     .stSlider > div {background-color: #000;}
+#     .stButton button {background-color: #000; color: white; border-radius: 8px;}
+#     .stSelectbox {background-color: #000;}
+# </style>""", unsafe_allow_html=True)
 
 def main():
     with st.form('prediction_form'):
         st.subheader("Enter the details below:")
-
         # Use columns for better layout
         col1, col2 = st.columns(2)
 
@@ -113,14 +130,19 @@ def main():
 
         if pred == 'Slight injury':
             st.success('Thank God! It was a Slight Injury!')
+            exciting_prediction = "Wow, thank God! It was a Slight Injury! What a relief!"
+            speak_prediction(exciting_prediction)
         elif pred == 'Serious Injury':
             st.warning('It seems like Serious Injury!')
+            speak_prediction("Uh-oh, it seems like..., Serious Injury! Please stay alert and careful on the roads!")
         else:
-            st.error('OMG it\'s a Fatal Injury. Hope the driver recovers fast.')
+            fatal_injury_statement = "OMG, it's a Fatal Injury. Hope the driver recovers fast. Stay strong!."
+            speak_prediction(fatal_injury_statement)
 
     # Add a footer section with the message from Aditya
     st.markdown("<hr style='border: 1px solid #ccc;'>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-size: 16px;'>Greetings from <b>Aditya</b>. Thanks for using this application! 🚗</p>", unsafe_allow_html=True)
+    speak_prediction("Hello, Welcome to Accident Severity Prediction Platform")
 
 if __name__ == '__main__':
     main()
