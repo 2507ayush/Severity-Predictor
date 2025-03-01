@@ -140,7 +140,7 @@ def main():
 
     # Add a footer section with the message from Aditya
     st.markdown("<hr style='border: 1px solid #ccc;'>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 16px;'>Greetings from <b>Aditya</b>. Thanks for using this application! 🚗</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 16px;'>Greetings from <b>Ayush</b>. Thanks for using this application! 🚗</p>", unsafe_allow_html=True)
     # speak_prediction("Hello, Welcome to Accident Severity Prediction Platform")
 
 if __name__ == '__main__':
